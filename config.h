@@ -111,10 +111,10 @@
 // #define UPDATE_FRAMES_WITHOUT_DIFFING
 
 #if defined(SINGLE_CORE_BOARD) && defined(USE_DMA_TRANSFERS) && !defined(SPI_3WIRE_PROTOCOL) // TODO: 3-wire SPI displays are not yet compatible with ALL_TASKS_SHOULD_DMA option.
-// These are prerequisites for good performance on Pi Zero
-#ifndef ALL_TASKS_SHOULD_DMA
-#define ALL_TASKS_SHOULD_DMA
-#endif
+// // These are prerequisites for good performance on Pi Zero
+// #ifndef ALL_TASKS_SHOULD_DMA
+// #define ALL_TASKS_SHOULD_DMA
+// #endif
 #ifndef NO_INTERLACING
 #define NO_INTERLACING
 #endif
