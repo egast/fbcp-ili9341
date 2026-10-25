@@ -275,6 +275,10 @@ void RunSPITask(SPITask *task)
   const uint32_t payloadSize = tEnd - tStart;
   uint8_t *tPrefillEnd = tStart + MIN(15, payloadSize);
 
+#ifdef DISPLAY_NEEDS_CHIP_SELECT_SIGNAL
+  BEGIN_SPI_COMMUNICATION();
+#endif
+
 #define TASK_SIZE_TO_USE_DMA 4
   // Do a DMA transfer if this task is suitable in size for DMA to handle
   if (payloadSize >= TASK_SIZE_TO_USE_DMA && (task->cmd == DISPLAY_WRITE_PIXELS || task->cmd == DISPLAY_SET_CURSOR_X || task->cmd == DISPLAY_SET_CURSOR_Y))
@@ -283,6 +287,9 @@ void RunSPITask(SPITask *task)
       WaitForPolledSPITransferToFinish();
 //    printf("DMA cmd=0x%x, data=%d bytes\n", task->cmd, task->PayloadSize());
     SPIDMATransfer(task);
+#ifdef DISPLAY_NEEDS_CHIP_SELECT_SIGNAL
+    WaitForDMAFinished();
+#endif
     previousTaskWasSPI = false;
   }
   else
@@ -332,6 +339,9 @@ void RunSPITask(SPITask *task)
 
     previousTaskWasSPI = true;
   }
+#ifdef DISPLAY_NEEDS_CHIP_SELECT_SIGNAL
+  END_SPI_COMMUNICATION();
+#endif
 }
 #else
 
